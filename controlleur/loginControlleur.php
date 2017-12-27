@@ -1,6 +1,8 @@
 <?php
 
-    class LoginControlleur{
+    require_once "controlleur.php";
+
+    class LoginControlleur extends Controlleur{
         
         public function login(array $user): ?string{ // typage -> array indique le type de variable qu'on attend en paramètre, : string indique que la fonction doit attendre un string en retour (fonctionnel sous php 7), sinon php affichera un fatal error. : ?string indiquerait que la fonction attend un string ou NULL. Par défaut une fonction est de type public
 
@@ -11,7 +13,7 @@
             $email = htmlspecialchars(trim($user["email"])); //htmlspecialchars réencode la string en annulant le code eventuel, on créé la variable en modifiant les balises html
             $password = strip_tags(trim($user["password"])); // le strip tags supprime les balises html php, on créé la variable
 
-            if($this->validateEmail($email)) // vérification de l'email avec la fonction de la classe
+            if(!$this->validateEmail($email)) // si l'email n'est pas bon (verif avec la fonction de la classe)
                 return "view/no-connect/login.php";
 
             if($email == "toto@toto.toto" && $password = "toto"){ // création d'une connexion valide
@@ -19,12 +21,6 @@
                 return "view/connect/index.php";
             } else
                 return "view/no-connect/login.php"; // une seule instruction, accolades pas obligatoires
-        }
-
-        public function validateEmail(string $email): bool{
-
-            return (filter_var($email, FILTER_VALIDATE_EMAIL)) ? true : false; // filter_var() permet de filtrer des variables. Forme ternaire au lieu de "if"
-
-        }
+        } 
 
     }
